@@ -53,16 +53,10 @@ int main(int argc, char *argv[]) {
 		file >> command;
 		cout << "command: " << command << endl;
 			if(command == "actions"){
-				//while(nextInput != "Desired"){
 				file >> ws;
 				file >> equalsign;
-				// cout << "equalsign" <<  equalsign << endl;
 				if(equalsign != "=") return 0;
 				file >> ws;
-				// file >> osbracket;
-				// cout << "osbracket" <<  osbracket << endl;
-				// if(osbracket != "[") return 0;
-				// cout << "osbracket: " << osbracket << endl;
 				cout << file.peek() << endl;
 				while(!file.eof() && file.peek()!= 93){
 					getline(file, profilestring);	
@@ -70,16 +64,11 @@ int main(int argc, char *argv[]) {
 				}
 				cout << "Profile string = " << profilestring << endl;
 			}else if(command == "stock_actions"){
-				//while(nextInput != "Desired"){
 				file >> ws;
 				file >> equalsign;
 				cout << "equalsign" <<  equalsign << endl;
 				if(equalsign != "=") return 0;
 				file >> ws;
-				// file >> osbracket;
-				// cout << "osbracket" <<  osbracket << endl;
-				// if(osbracket != "[") return 0;
-				// cout << "osbracket: " << osbracket << endl;
 				while(file.peek()!= 93){
 					getline(file, stockstring);			
 				}
