@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <stockns.h>
 using namespace std;
 
 //use the argument vectors as input(assume passing in input through command line)
@@ -49,11 +50,11 @@ int main(int argc, char *argv[]) {
 	string forjsonprofilestr = profilestring.substr(found1+1);
 	forjsonprofilestr.resize(forjsonprofilestr.length()-1);
 	forjsonprofilestr = '{' + forjsonprofilestr + '}';
-	cout << '\n' << "FOR: " << forjsonprofilestr << endl ;
-	// stockns::action profilejson = nlohmann::json::parse(forjsonprofilesubstr);
-	// cout << profilejson << endl;
-	auto j3 = nlohmann::json::parse(forjsonprofilestr);
-	cout << j3 << endl;
+	cout << '\n' << "FOR:" << forjsonprofilestr << endl ;
+	stockns::action profilejson = nlohmann::json::parse(forjsonprofilestr);
+	cout << profilejson << endl;
+	// auto j3 = nlohmann::json::parse(forjsonprofilestr);
+	// cout << j3 << endl;
 	// nlohmann:: json j;
 	// forjsonprofilesubstr >> j;
 	// cout << "j is" << j << endl;
@@ -64,9 +65,6 @@ int main(int argc, char *argv[]) {
 	// json j;
 	// file >> j;
 	// cout << j << endl;
-	
-	//string delimiter5 = "[";
-	//string delimiter6 = "]";
 
 	// size_t pos = 0;
 	// string token;

@@ -11,7 +11,7 @@ namespace stockns {
 		// int day; 
 		std :: string action;
 		double price;
-		std::string ticker;
+		std :: string ticker;
         int shares;
     };
     void to_json(json& j, const action& currentaction) {
