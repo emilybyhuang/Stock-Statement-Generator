@@ -26,7 +26,6 @@ actions = [{'date': '1992/07/14 11:12:30', 'action': 'BUY', 'price': '12.3', 'ti
 {'date': '1992/10/23 16:14:30', 'action': 'SELL', 'price': '18.2', 'ticker': 'MSFT', 'shares': '600'},
 {'date': '1992/10/25 10:15:20', 'action': 'SELL', 'price': '20.3', 'ticker': 'AAPL', 'shares': '300'},
 {'date': '1992/10/25 16:12:10', 'action': 'BUY', 'price': '18.3', 'ticker': 'MSFT', 'shares': '500'}]
-
 stock_actions = [{'date': '1992/08/14', 'dividend': '0.10', 'split': '', 'stock': 'AAPL'},
 {'date': '1992/09/01', 'dividend': '', 'split': '3', 'stock': 'AAPL'},
 {'date': '1992/10/15', 'dividend': '0.20', 'split': '', 'stock': 'MSFT'},
