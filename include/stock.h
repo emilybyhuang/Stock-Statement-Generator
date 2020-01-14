@@ -1,11 +1,16 @@
 #include <iostream>
+
 using namespace std;
 #ifndef SHARE
 #define SHARE
 class stock{
     public:
-    string name;
-    double amount;
+    string ticker;
+    int shares;
     double price;
+    stock (string ticker, int shares, double price);
+    friend ostream &operator <<(ostream & output, const stock & stk);
 };
+
+
 #endif

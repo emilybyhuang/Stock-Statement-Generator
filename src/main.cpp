@@ -2,105 +2,73 @@
 #include <string>
 #include <stdio.h>
 #include <stock.h>
-#include <keyWordsList.h>
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <stockns.h>
+#include <boost/algorithm/string.hpp>
+#include <updateactions.h>
+#include <transaction.h>
+ 
 using namespace std;
 
 //use the argument vectors as input(assume passing in input through command line)
 int main(int argc, char *argv[]) {
-	vector<stock> profile;
-	double dividendIncome;
-	string profilestring, stockstring;
-	string command, line, date, keyword, token;
-	string osbracket, csbracket, equalsign;
-	size_t pos = 0;
-
-	string delimiter1 = ": ";
-	string delimiter2 = ", ";
-	string ocbracket = "{";
-	string ccbracket = "}";
-	string delimiter5 = "/";
-	string apo = "'";
+	vector<nlohmann::json> profilevector;
+	vector<stock> mystocks;
+	double dividendIncome = 0.0;
+	string actionstring, stockstring;
+	string actiontoken, stocktoken, date, action, price, ticker, shares;
+	string delimiter = "}";
 
 	//read from the input file
 	fstream file(argv[1]);
 	//check the input file
-	if (!file.is_open()) cout<< "Could not open file\n";
-	else cout << "opened file" << endl;
+	if (!file.is_open()) cout<< "Can not open file" << endl;
 	
-	getline(file, profilestring);
+	//store the inputs as strings
+	getline(file, actionstring);
 	getline(file, stockstring);
-	cout << "Profile string = " << profilestring << endl;
-	cout << "Stock string = " << stockstring << endl;
+	//cout << "Profile string = " << actionstring << endl;
+	//cout << "Stock string = " << stockstring << endl;
 	
-	// nlohmann:: json j;
-	// file >> j;
-	// cout << "j is" << j << endl;
+	//get the action and stockaction string in a pseudo json form(omit action = [...] 
+	//and stock_actions = [...]);
+	size_t startindex = actionstring.find('[');
+	string jsonactstr = actionstring.substr(startindex+1);
+	string jsonstostr = stockstring.substr(startindex+1);
+	jsonactstr.resize(jsonactstr.length()-1);
+	jsonstostr.resize(jsonstostr.length()-1);
 
-	// json js = profilestring;
-	// auto s2 = js.get<std::string>();
-	// cout << "s2:" << s2 << endl;
-	
-	size_t found1 = profilestring.find('[');
-	size_t found2 = profilestring.find(']');
-	string forjsonprofilestr = profilestring.substr(found1+1);
-	forjsonprofilestr.resize(forjsonprofilestr.length()-1);
-	forjsonprofilestr = '{' + forjsonprofilestr + '}';
-	cout << '\n' << "FOR:" << forjsonprofilestr << endl ;
-	stockns::action profilejson = nlohmann::json::parse(forjsonprofilestr);
-	cout << profilejson << endl;
-	// auto j3 = nlohmann::json::parse(forjsonprofilestr);
-	// cout << j3 << endl;
-	// nlohmann:: json j;
-	// forjsonprofilesubstr >> j;
-	// cout << "j is" << j << endl;
-
-
-
-	//cout << "here: " << profilejson.is_array() << endl;
-	// json j;
-	// file >> j;
-	// cout << j << endl;
-
-	// size_t pos = 0;
-	// string token;
-	// while ((pos = s.find(delimiter1)) != string :: npos) {
-	// 	token = s.substr(0, pos);
-	// 	cout << token << endl;
-	// 	s.erase(0, pos + delimiter1.length());
-	// }
-
-	return 0;
-	//cout << s << endl;
-	// while(!file.eof()){
-	// 	cout << "in while" << endl;
-	// 	file >> command;
-	// 	cout << "command" << endl;
-	// 	if(command == "actions"){
-	// 		file >> ws;
-	// 		//go until it hits [
-	// 		file.ignore(256,'[');
-	// 		//getline(file, token, delimeter1)) {
-			
-	// 		//ascii 93 is ]
-
-	// 		while(!file.eof() && file.peek()!= 93){
-	// 			//get and store new info: date, action, ticker, price, shares
-	// 			while ((pos = profilestring.find(apo)) != string::npos) {
-	// 				token = profilestring.substr(0, pos);
-	// 				cout << token << endl;
-	// 				profilestring.erase(0, pos + delimiter1.length());
-	// 			}
-	// 			file >> date;
-	// 			cout << "date is" << date << endl;
-	// 			char a;
-	// 			a = getchar();
-	// 		}
-	// 	}else if(command == "stock_actions"){
-	// 	}
-	// }					
+	size_t position1 = 0, position2 = 0;
+	while (((position1 = jsonactstr.find(delimiter)) != string::npos)||
+	((position2 = jsonactstr.find(delimiter)) != string::npos)){
+		
+		//for reading the actions one at a time and converting to standard json form
+		actiontoken = jsonactstr.substr(0, position1);
+		actiontoken = actiontoken + "}";
+		jsonactstr.erase(0, position1 + 1 + delimiter.length());
+		boost::replace_all(actiontoken, "\'", "\"");
+		nlohmann::json inputaction = nlohmann::json::parse(actiontoken);
+		
+		//for reading the stock_actions one at a time and converting to standard json form
+		stocktoken = jsonstostr.substr(0, position2);
+		stocktoken = stocktoken + "}";
+		jsonstostr.erase(0,position2 + 1 + delimiter.length());
+		boost::replace_all(stocktoken, "\'", "\"");
+		nlohmann::json inputstockaction = nlohmann::json::parse(stocktoken);
+		
+		date = inputaction["date"];
+		action = inputaction["action"];
+		price = inputaction["price"];
+		ticker = inputaction["ticker"];
+		shares = inputaction["shares"];
+		boost::replace_all(date, "/", "-");
+		date = date.substr(0,10);
+		cout << "On " << date << ", you have:" << endl;
+		bool addprofile = updateactions(mystocks, action, ticker, shares, price);
+		cout << '\t' << "- $" << fixed << setprecision(2) << dividendIncome << " of dividend income" << endl;
+		transaction(action, ticker, shares, price);
+	}
+	return 0;				
 }

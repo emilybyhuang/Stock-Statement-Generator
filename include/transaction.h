@@ -1,11 +1,9 @@
+#include <nlohmann/json.hpp>
+#include <iostream>
+using namespace std;
 
-// #ifndef TRANSACTION
-// #define TRANSACTION
-// //this class will contain the most up to date info on the account
-// class transaction{
-//     public:
-//     std::string date;
-//     std::string *shares;//linked list of shares
-//     double dividendIncome;
-// };
-// #endif
+#ifndef TRANSACTION
+#define TRANSACTION
+
+void transaction(string action, string ticker, string shares ,string price);
+#endif
