@@ -12,10 +12,7 @@ bool updateactions(std::vector<stock>& mystocks, string action, string ticker, s
             }
         }
         stock newstock(ticker, stoi(shares),stod(price));
-        //cout << "newstock: " << newstock << endl;
-        // newstock.ticker = ticker;
-        // newstock.shares = stoi(shares);
-        // newstock.price = stod(price);
+
         mystocks.push_back(newstock);
         cout <<"size:" << mystocks.size();
         for (int i = 0; i < mystocks.size(); i++){

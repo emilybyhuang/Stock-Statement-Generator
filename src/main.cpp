@@ -9,6 +9,7 @@
 #include <boost/algorithm/string.hpp>
 #include <updateactions.h>
 #include <transaction.h>
+#include <processactions.h>
  
 using namespace std;
 
@@ -39,25 +40,8 @@ int main(int argc, char *argv[]) {
 	jsonactstr.resize(jsonactstr.length()-1);
 	jsonstostr.resize(jsonstostr.length()-1);
 
-	size_t position1 = 0, position2 = 0;
 	cout << '\n' << endl;
-	while (((position1 = jsonactstr.find(delimiter)) != string::npos)) {
-		actiontoken = jsonactstr.substr(0, position1);
-		actiontoken = actiontoken + "}";
-		jsonactstr.erase(0, position1 + 1 + delimiter.length());
-		boost::replace_all(actiontoken, "\'", "\"");
-		nlohmann::json inputaction = nlohmann::json::parse(actiontoken);
-		a_date = inputaction["date"];
-		a_action = inputaction["action"];
-		a_price = inputaction["price"];
-		a_ticker = inputaction["ticker"];
-		a_shares = inputaction["shares"];
-		boost::replace_all(a_date, "/", "-");
-		a_date = a_date.substr(0,10);
-		cout << "On " << a_date << ", you have:" << endl;
-		bool addinputaction = updateactions(mystocks, a_action, a_ticker, a_shares, a_price);
-		cout << '\t' << "- $" << fixed << setprecision(2) << dividendIncome << " of dividend income" << endl;
-		//transaction(action, ticker, shares, price);
-	}
+	bool a_process = processactions(mystocks, jsonactstr, delimiter);
+	
 	return 0;				
 }
