@@ -18,8 +18,8 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
     string actDate, actAction, actPrice, actTicker, actShares, stoActDate,stoActDividend, stoActSplit, stoActStock;
     bool actReady = true;
     bool stoActReady = true;
-    cout << "string in action: " << jsonActStr << endl << endl;
-    cout << "string in stock action: " << jsonStoStr << endl << endl;
+    cout << "ACTSTRING: " << jsonActStr << endl << endl;
+    cout << "STOACTSTRING: " << jsonStoStr << endl << endl;
 
     size_t position1 = jsonActStr.find(delimiter);
     size_t position2 = jsonStoStr.find(delimiter);
@@ -31,37 +31,47 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
         cout << "pos2 " << position2 << endl; 
         if(position1 != string ::npos){
             cout << "action position1: " << position1 << endl;
-            string actionString = jsonActStr.substr(0, position1);
-            actionString = actionString + "}";
+            string actionString = jsonActStr.substr(0, position1 + 1);
+            //actionString = actionString + "}";
             jsonActStr.erase(0, position1 + 1 + delimiter.length());
             boost::replace_all(actionString, "\'", "\"");
-            cout << actionString << endl;
+            
+            cout << "action string: " << actionString << endl;
+            
             nlohmann::json inputAction = nlohmann::json::parse(actionString);
+            
+            cout << "input action: " << inputAction << endl;
+            
             actDate = inputAction["date"];
             actAction = inputAction["action"];
             actPrice = inputAction["price"];
             actTicker = inputAction["ticker"];
             actShares = inputAction["shares"];
-            cout << actTicker << endl;
-            cout << actDate << endl;
-            cout << actPrice << endl;
-            cout << actShares << endl;
-            cout << actAction << endl;
+            // cout << actTicker << endl;
+            // cout << actDate << endl;
+            // cout << actPrice << endl;
+            // cout << actShares << endl;
+            // cout << actAction << endl;
             actReady = false;
         }
 
         if(position2 != string::npos){
             cout << "stock action position2: " << position2 << endl;
-            string stoActString = jsonStoStr.substr(0, position2);
-            stoActString = stoActString + "}";
+            string stoActString = jsonStoStr.substr(0, position2 + 1);
+            //stoActString = stoActString + "}";
             jsonStoStr.erase(0, position2 + 1 + delimiter.length());
             boost::replace_all(stoActString, "\'", "\"");
-            cout << stoActString << endl;
+            
+            cout << "stock string: " << stoActString << endl;
+            
             nlohmann::json inputStockAction = nlohmann::json::parse(stoActString);
+            
+            cout << "input stock action: " << inputStockAction << endl;
+           
             stoActDate = inputStockAction["date"];
             stoActDividend = inputStockAction["dividend"];
             stoActSplit = inputStockAction["split"];
-            stoActStock = inputStockAction["stocks"];
+            stoActStock = inputStockAction["stock"];
             stoActReady = false;
         }
         
@@ -98,11 +108,12 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
                 actReady = true;
             }
         }
+
         if(!actReady){
-            if(( position1 = jsonActStr.find(delimiter,position1+1)) != string::npos)actReady = true;
+            if((position1 = jsonActStr.find(delimiter, position1 + 1)) != string::npos)actReady = true;
         }   
         if(!stoActReady){
-            if((position2 = jsonStoStr.find(delimiter,position2+1)) != string::npos)stoActReady = true;
+            if((position2 = jsonStoStr.find(delimiter, position2 + 1)) != string::npos)stoActReady = true;
         }    
 	}
 
