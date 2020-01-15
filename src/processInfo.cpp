@@ -13,9 +13,11 @@
 
 using namespace std;
 
-bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoStr, string delimiter, double dividendIncome){
+bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoStr, 
+string delimiter, double dividendIncome){
     
-    string actDate, actAction, actPrice, actTicker, actShares, stoActDate,stoActDividend, stoActSplit, stoActStock;
+    string actDate, actAction, actPrice, actTicker, actShares, 
+    stoActDate,stoActDividend, stoActSplit, stoActStock;
     bool actReady = true;
     bool stoActReady = true;
     cout << "ACTSTRING: " << jsonActStr << endl << endl;
@@ -33,7 +35,7 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
             cout << "action position1: " << position1 << endl;
             string actionString = jsonActStr.substr(0, position1 + 1);
             //actionString = actionString + "}";
-            jsonActStr.erase(0, position1 + 1 + delimiter.length());
+            
             boost::replace_all(actionString, "\'", "\"");
             
             cout << "action string: " << actionString << endl;
@@ -59,7 +61,6 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
             cout << "stock action position2: " << position2 << endl;
             string stoActString = jsonStoStr.substr(0, position2 + 1);
             //stoActString = stoActString + "}";
-            jsonStoStr.erase(0, position2 + 1 + delimiter.length());
             boost::replace_all(stoActString, "\'", "\"");
             
             cout << "stock string: " << stoActString << endl;
@@ -77,18 +78,22 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
         
         if((position1 != string::npos)&&(position2 != string::npos)){
             if(strcmp(actDate.c_str(), stoActDate.c_str()) < 0){
+                //cout << "compare result: "  << strcmp(actDate.c_str(), stoActDate.c_str()) << endl;
                 boost::replace_all(actDate, "/", "-");
                 string printDate = actDate.substr(0,10);
                 cout << "On " << actDate << ", you have:" << endl;
                 bool update = updateAct(myportfolio, actAction, actTicker, actShares, actPrice);
                 printPorfolio(myportfolio, dividendIncome);
+                jsonActStr.erase(0, position1 + 1 + delimiter.length());
                 actReady = true;
             }else{
+                //cout << "compare result: "  << strcmp(actDate.c_str(), stoActDate.c_str()) << endl;
                 boost::replace_all(stoActDate, "/", "-");
                 string printDate = stoActDate.substr(0,10);
                 cout << "On " << stoActDate << ", you have:" << endl;
                 bool update = updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
                 printPorfolio(myportfolio, dividendIncome);
+                jsonStoStr.erase(0, position2 + 1 + delimiter.length());
                 stoActReady = true;
             } 
         }else{
@@ -111,12 +116,15 @@ bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
 
         if(!actReady){
             if((position1 = jsonActStr.find(delimiter, position1 + 1)) != string::npos)actReady = true;
-        }   
-        if(!stoActReady){
+            cout << "position 1:" << position1 << endl;
+            cout << "position 2:" << position2 << endl;
+        }else if(!stoActReady){
             if((position2 = jsonStoStr.find(delimiter, position2 + 1)) != string::npos)stoActReady = true;
+            cout << "position 1:" << position1 << endl;
+            cout << "position 2:" << position2 << endl;
         }    
 	}
-
    // cout << '\t' << "- $" << fixed << setprecision(2) << dividendIncome << " of dividend income" << endl;
     return true;
 }
+
