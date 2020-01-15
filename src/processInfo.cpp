@@ -31,12 +31,14 @@ string delimiter, double dividendIncome){
 
     //&& ((position1 < jsonActStr.length())&&(position2 < jsonStoStr.length()))
     while(actReady||stoActReady){
+        cout << endl << "In while loop ... "<< endl;
     // cout << "this pos: " << pos2 << endl;
     // while ((!actReady && ((position1 = jsonActStr.find(delimiter,position1+1)) != string::npos)) || 
     // (!stoactReady && ((position2 = jsonStoStr.find(delimiter,position2+1)) != string::npos))){
-        cout << "Pos1 " << position1 << endl;
-        cout << "Pos2 " << position2 << endl; 
+        //cout << "Pos1 " << position1 << endl;
+        //cout << "Pos2 " << position2 << endl; 
         if(position1 != string ::npos && actReady){
+            cout << "Pos1 " << position1 << endl;
             string actionString = jsonActStr.substr(0, position1 + 1);
             //actionString = actionString + "}";
             
@@ -53,15 +55,11 @@ string delimiter, double dividendIncome){
             actPrice = inputAction["price"];
             actTicker = inputAction["ticker"];
             actShares = inputAction["shares"];
-            // cout << actTicker << endl;
-            // cout << actDate << endl;
-            // cout << actPrice << endl;
-            // cout << actShares << endl;
-            // cout << actAction << endl;
             actReady = false;
         }
         
         if(position2 != string::npos && stoActReady){
+            cout << "Pos2 " << position2 << endl; 
             string stoActString = jsonStoStr.substr(0, position2 + 1);
             //stoActString = stoActString + "}";
             boost::replace_all(stoActString, "\'", "\"");
@@ -116,22 +114,30 @@ string delimiter, double dividendIncome){
                 stoActReady = true; 
             }
         }
+
         if(actReady){  
             if((position1 = jsonActStr.find(delimiter))!= string::npos){
+                //do nothing
                 cout << jsonActStr.find(delimiter) << endl;
                 actReady = true;
             }else if(jsonActStr.find(delimiter)== string::npos){
                 actReady = false;
-                cout << "actReady false " << endl;
+                cout << "actReady false" << endl;
+                // if((position2 = jsonStoStr.find(delimiter))!= string::npos && stoActReady == false){
+                //     stoActReady = true;
+                // }
             }
         }else if(stoActReady){
             if((position2 = jsonStoStr.find(delimiter))!= string::npos){
                 //do nothing
                 cout << jsonStoStr.find(delimiter) << endl;
                 stoActReady = true;
-            }else if(jsonStoStr.find(delimiter)== string::npos){
+            }else if(jsonStoStr.find(delimiter) == string::npos){
                 stoActReady = false;
                 cout << "stoActReady false" << endl;
+                // if((position1 = jsonActStr.find(delimiter))!= string::npos && actReady == false){
+                //     actReady = true;
+                // }
             }
         }
 	}
