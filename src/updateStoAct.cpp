@@ -8,7 +8,7 @@
 
 bool updateStoAct(std::vector<stock>& mystocks, string dividend, string split, string stock, double& dividendIncome){
     if(!split.empty()){
-        for(int i = 0; i< mystocks.size(); i++){
+        for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
                 mystocks[i].shares = stoi(split) * mystocks[i].shares;
                 mystocks[i].price = mystocks[i].price / stoi(split);
@@ -16,7 +16,7 @@ bool updateStoAct(std::vector<stock>& mystocks, string dividend, string split, s
             }
         }   
     }else if(!dividend.empty()){
-        for(int i = 0; i< mystocks.size(); i++){
+        for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
                 dividendIncome += mystocks[i].shares * stod(dividend);
                 cout <<'\t' << "- " << stock << " paid out $" << fixed << setprecision(2) << stod(dividend) << 

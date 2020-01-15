@@ -20,23 +20,11 @@ string delimiter, double dividendIncome){
     stoActDate,stoActDividend, stoActSplit, stoActStock;
     bool actReady = true;
     bool stoActReady = true;
-    //cout << "ACTSTRING: " << jsonActStr << endl << endl;
-    //cout << "STOACTSTRING: " << jsonStoStr << endl << endl;
 
     size_t position1 = jsonActStr.find(delimiter);
     size_t position2 = jsonStoStr.find(delimiter);
 
-    //cout << jsonActStr.length() << endl;
-    //cout << jsonStoStr.length() << endl;
-
-    //&& ((position1 < jsonActStr.length())&&(position2 < jsonStoStr.length()))
-    while(actReady||stoActReady){
-        //cout << endl << "In while loop ... "<< endl;
-    // cout << "this pos: " << pos2 << endl;
-    // while ((!actReady && ((position1 = jsonActStr.find(delimiter,position1+1)) != string::npos)) || 
-    // (!stoactReady && ((position2 = jsonStoStr.find(delimiter,position2+1)) != string::npos))){
-        //cout << "Pos1 " << position1 << endl;
-        //cout << "Pos2 " << position2 << endl; 
+    while(actReady||stoActReady){ 
         if(position1 != string ::npos && actReady){
             //cout << "Pos1 " << position1 << endl;
             string actionString = jsonActStr.substr(0, position1 + 1);
@@ -77,26 +65,34 @@ string delimiter, double dividendIncome){
             stoActReady = false;
         }
         
+        actDate = actDate.substr(0,10);
+        stoActDate = stoActDate.substr(0,10);
         if((position1 != string::npos)&&(position2 != string::npos)){
             if(strcmp(actDate.c_str(), stoActDate.c_str()) < 0){
-                //cout << "compare result: "  << strcmp(actDate.c_str(), stoActDate.c_str()) << endl;
                 boost::replace_all(actDate, "/", "-");
-                string printDate = actDate.substr(0,10);
                 cout << "On " << actDate << ", you have:" << endl;
                 bool update = updateAct(myportfolio, actAction, actTicker, actShares, actPrice);
                 printPorfolio(myportfolio, dividendIncome);
                 jsonActStr.erase(0, position1 + 1 + delimiter.length());
                 actReady = true;
-            }else{
-                //cout << "compare result: "  << strcmp(actDate.c_str(), stoActDate.c_str()) << endl;
+            }else if(strcmp(actDate.c_str(), stoActDate.c_str()) > 0){
                 boost::replace_all(stoActDate, "/", "-");
-                string printDate = stoActDate.substr(0,10);
                 cout << "On " << stoActDate << ", you have:" << endl;
                 bool update = updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
                 printPorfolio(myportfolio, dividendIncome);
                 jsonStoStr.erase(0, position2 + 1 + delimiter.length());
                 stoActReady = true;
-            } 
+            }else{
+                boost::replace_all(actDate, "/", "-");
+                cout << "On " << actDate << ", you have:" << endl;
+                bool update1 = updateAct(myportfolio, actAction, actTicker, actShares, actPrice);
+                bool update2 = updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
+                printPorfolio(myportfolio, dividendIncome);
+                jsonActStr.erase(0, position1 + 1 + delimiter.length());
+                jsonStoStr.erase(0, position2 + 1 + delimiter.length());
+                actReady = true;
+                stoActReady = true;
+            }
         }else{
             if(position1 != string::npos && position2 == string::npos){
                 boost::replace_all(actDate, "/", "-");
