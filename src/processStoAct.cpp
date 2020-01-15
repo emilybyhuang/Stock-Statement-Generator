@@ -22,8 +22,8 @@ bool processStoAct(vector<stock>& myportfolio, string jsonstr, string delimiter,
         split = stockaction["split"];
         stock = stockaction["stock"];
         boost::replace_all(date, "/", "-");
-        date = date.substr(0,10);
-        cout << "On " << date << ", you have:" << endl;
+        string printDate = date.substr(0,10);
+        cout << "On " << printDate << ", you have:" << endl;
         bool update = updateStoAct(myportfolio, dividend, split, stock, dividendIncome);
         printPorfolio(myportfolio, dividendIncome);
     }

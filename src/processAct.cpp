@@ -24,8 +24,8 @@ bool processAct(vector<stock>& myportfolio, string jsonstr, string delimiter, do
         ticker = inputaction["ticker"];
         shares = inputaction["shares"];
         boost::replace_all(date, "/", "-");
-        date = date.substr(0,10);
-        cout << "On " << date << ", you have:" << endl;
+        string printDate = date.substr(0,10);
+        cout << "On " << printDate << ", you have:" << endl;
         bool update = updateAct(myportfolio, action, ticker, shares, price);
         printPorfolio(myportfolio, dividendIncome);
 	}

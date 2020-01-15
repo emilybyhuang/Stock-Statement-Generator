@@ -19,13 +19,21 @@ bool updateAct(std::vector<stock>& mystocks, string action, string ticker, strin
             stock newstock(ticker, stoi(shares),stod(price));
             mystocks.push_back(newstock);
         }
-        cout <<'\t' << "- You bought " << stoi(shares) << " of " << ticker << " at a price of $" << fixed << setprecision(2) << stod(price) << "per share" << endl;
+        cout <<'\t' << "- You bought " << stoi(shares) << " of " << ticker << " at a price of $" << 
+        fixed << setprecision(2) << stod(price) << " per share" << endl;
     }else if (action == "SELL"){
         bool found = false;
         for (int i = 0; i < mystocks.size(); i++){
             if(ticker == mystocks[i].ticker){
                 found = true;
-                mystocks[i].shares -= stoi(shares);
+                double worth = stoi(shares) * stod(price);
+                string word;
+                if(worth > (stoi(shares) * (mystocks[i].price))) word = "profit";
+                else word = "loss";
+                mystocks[i].shares = mystocks[i].shares - stoi(shares);
+                cout <<'\t' << "- You sold " << stoi(shares) << " of " << ticker << " at a price of $" << 
+                fixed << setprecision(2) << stod(price) << " per share for a " << word << " of $" << 
+                worth - (stoi(shares) * (mystocks[i].price)) << endl;
             }
         }
         if(!found) {

@@ -11,5 +11,5 @@ void printPorfolio(vector<stock>& myportfolio, double dividendIncome){
     for(int i = 0; i < myportfolio.size(); i++){
         cout << myportfolio[i] << endl;
     }
-    cout << '\t' << "- $" << fixed << setprecision(2) << dividendIncome << "of dividend income" << endl;
+    cout << '\t' << "- $" << fixed << setprecision(2) << dividendIncome << " of dividend income" << endl;
 }

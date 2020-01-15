@@ -31,8 +31,6 @@ int main(int argc, char *argv[]) {
 	//store the inputs as strings
 	getline(file, actionstring);
 	getline(file, stockstring);
-	//cout << "inputaction string = " << actionstring << endl;
-	//cout << "Stock string = " << stockstring << endl;
 	
 	size_t found1 = actionstring.find('[');
 	size_t found2 = stockstring.find('[');
@@ -42,8 +40,7 @@ int main(int argc, char *argv[]) {
 	jsonactstr.resize(jsonactstr.length()-1);
 	jsonstostr.resize(jsonstostr.length()-1);
 	
-	cout << '\n' << endl;
 	bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
-	bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
+	//bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
 	return 0;				
 }

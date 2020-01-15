@@ -11,6 +11,7 @@ bool updateStoAct(std::vector<stock>& mystocks, string dividend, string split, s
         for(int i = 0; i< mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
                 mystocks[i].shares = stoi(split) * mystocks[i].shares;
+                mystocks[i].price = mystocks[i].price / stoi(split);
                 cout <<'\t' << "- " << stock << " split " << split << " to 1, and you have " << mystocks[i].shares * stoi(split) << endl;
             }
         }   
