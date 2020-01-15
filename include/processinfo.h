@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-#ifndef PROCESSACT
-#define PROCESSACT
+#ifndef OUTPUTS
+#define OUTPUTS
 bool processAct(vector<stock>& myportfolio, string jsonstr, string delimiter, double dividendIncome);
 #endif

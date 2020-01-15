@@ -41,6 +41,6 @@ int main(int argc, char *argv[]) {
 	jsonstostr.resize(jsonstostr.length()-1);
 	
 	bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
-	//bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
+	bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
 	return 0;				
 }

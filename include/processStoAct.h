@@ -2,8 +2,8 @@
 #include <stock.h>
 using namespace std;
 
-#ifndef OUTPUTS
-#define OUTPUTS
+#ifndef PROCESSSTOACT
+#define PROCESSSTOACT
 
 bool processStoAct(vector<stock>& myportfolio, string jsonstr, string delimiter, double& dividendIncome);
 
