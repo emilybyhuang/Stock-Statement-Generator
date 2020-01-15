@@ -21,7 +21,6 @@ int main(int argc, char *argv[]) {
 	vector<stock> mystocks;
 	double dividendIncome = 0.0;
 	string actionstring, stockstring;
-	string actiontoken, a_date, a_action, a_price, a_ticker, a_shares;
 	string delimiter = "}";
 
 	//read from the input file
@@ -44,5 +43,7 @@ int main(int argc, char *argv[]) {
 	//bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
 	//bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
 	processInfo(mystocks,jsonactstr,jsonstostr,delimiter,dividendIncome);
+	// int a;
+	// cin >> a;
 	return 0;				
 }
