@@ -7,10 +7,12 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <boost/algorithm/string.hpp>
-#include <updateactions.h>
+#include <updateAct.h>
+#include <updateStoAct.h>
 #include <transaction.h>
-#include <processactions.h>
- 
+#include <processAct.h>
+#include <processSto.h>
+
 using namespace std;
 
 //use the argument vectors as input(assume passing in input through command line)
@@ -33,15 +35,15 @@ int main(int argc, char *argv[]) {
 	//cout << "inputaction string = " << actionstring << endl;
 	//cout << "Stock string = " << stockstring << endl;
 	
-	size_t found = actionstring.find('[');
+	size_t found1 = actionstring.find('[');
+	size_t found2 = stockstring.find('[');
 	//get the action and stockaction string in a pseudo json form(omit action = [...] and stock_actions = [...]);
-	string jsonactstr = actionstring.substr(found+1);
-	string jsonstostr = stockstring.substr(found+1);
+	string jsonactstr = actionstring.substr(found1+1);
+	string jsonstostr = stockstring.substr(found2+1);
 	jsonactstr.resize(jsonactstr.length()-1);
 	jsonstostr.resize(jsonstostr.length()-1);
-
-	cout << '\n' << endl;
-	bool a_process = processactions(mystocks, jsonactstr, delimiter);
 	
+	cout << '\n' << endl;
+	bool a_process = processAct(mystocks, jsonactstr, delimiter);
 	return 0;				
 }

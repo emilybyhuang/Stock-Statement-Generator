@@ -2,5 +2,5 @@
 using namespace std;
 #ifndef OUTPUTS
 #define OUTPUTS
-void processactions(string jsonstr, size_t position, string delimiter);
+bool processAct(vector<stock>& myportfolio, string jsonstr, string delimiter);
 #endif
