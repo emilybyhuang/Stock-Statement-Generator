@@ -11,6 +11,7 @@
 #include <transaction.h>
 #include <processAct.h>
 #include <processStoAct.h>
+#include <processInfo.h>
 
 using namespace std;
 
@@ -40,7 +41,8 @@ int main(int argc, char *argv[]) {
 	jsonactstr.resize(jsonactstr.length()-1);
 	jsonstostr.resize(jsonstostr.length()-1);
 	
-	bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
-	bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
+	//bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
+	//bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
+	processInfo(mystocks,jsonactstr,jsonstostr,delimiter,dividendIncome);
 	return 0;				
 }
