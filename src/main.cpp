@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stock.h>
 #include <fstream>
-#include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <boost/algorithm/string.hpp>
@@ -11,7 +10,7 @@
 #include <updateStoAct.h>
 #include <transaction.h>
 #include <processAct.h>
-#include <processSto.h>
+#include <processStoAct.h>
 
 using namespace std;
 
@@ -45,5 +44,6 @@ int main(int argc, char *argv[]) {
 	
 	cout << '\n' << endl;
 	bool a_process = processAct(mystocks, jsonactstr, delimiter);
+	bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
 	return 0;				
 }
