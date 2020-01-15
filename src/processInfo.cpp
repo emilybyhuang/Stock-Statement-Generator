@@ -83,13 +83,8 @@ string delimiter, double dividendIncome){
                 jsonStoStr.erase(0, position2 + 1 + delimiter.length());
                 stoActReady = true;
             }else{
-                // boost::replace_all(stoActDate, "/", "-");
-                // cout << "On " << stoActDate << ", you have:" << endl;
-                // bool update = updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
-                // printPorfolio(myportfolio, dividendIncome);
-                // jsonStoStr.erase(0, position2 + 1 + delimiter.length());
-                // stoActReady = true;
                 boost::replace_all(actDate, "/", "-");
+                cout << "in same date" << endl;
                 cout << "On " << actDate << ", you have:" << endl;
                 bool update1 = updateAct(myportfolio, actAction, actTicker, actShares, actPrice);
                 bool update2 = updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
@@ -99,17 +94,6 @@ string delimiter, double dividendIncome){
                 actReady = true;
                 stoActReady = true;
             }
-            //else{
-                // boost::replace_all(actDate, "/", "-");
-                // cout << "On " << actDate << ", you have:" << endl;
-                // bool update1 = updateAct(myportfolio, actAction, actTicker, actShares, actPrice);
-                // bool update2 = updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
-                // printPorfolio(myportfolio, dividendIncome);
-                // jsonActStr.erase(0, position1 + 1 + delimiter.length());
-                // jsonStoStr.erase(0, position2 + 1 + delimiter.length());
-                // actReady = true;
-                // stoActReady = true;
-            //}
         }else{
             if(position1 != string::npos && position2 == string::npos){
                 boost::replace_all(actDate, "/", "-");
@@ -142,7 +126,8 @@ string delimiter, double dividendIncome){
                     stoActReady = true;
                 }
             }
-        }else if(stoActReady){
+        }
+        if(stoActReady){
             if((position2 = jsonStoStr.find(delimiter))!= string::npos){
                 //do nothing
                 //cout << jsonStoStr.find(delimiter) << endl;
