@@ -12,5 +12,4 @@ class stock{
     friend ostream &operator <<(ostream & output, const stock & stk);
 };
 
-
 #endif
