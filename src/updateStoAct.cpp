@@ -17,8 +17,8 @@ bool updateStoAct(std::vector<stock>& mystocks, string dividend, string split, s
     }else if(!dividend.empty()){
         for(int i = 0; i< mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
-                dividendIncome = mystocks[i].shares * stod(dividend);
-                cout <<'\t' << "- " << stock << "paid out $" << stod(dividend) << setprecision(2) << stod(dividend) << 
+                dividendIncome += mystocks[i].shares * stod(dividend);
+                cout <<'\t' << "- " << stock << "paid out $" << fixed << setprecision(2) << stod(dividend) << 
                 "per share, and you have" << mystocks[i].shares << "shares" << endl;
             }
         }

@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 	jsonstostr.resize(jsonstostr.length()-1);
 	
 	cout << '\n' << endl;
-	bool a_process = processAct(mystocks, jsonactstr, delimiter);
+	bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
 	bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
 	return 0;				
 }

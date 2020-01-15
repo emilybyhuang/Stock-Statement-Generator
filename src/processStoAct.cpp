@@ -5,6 +5,7 @@
 #include <processStoAct.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
+#include <printPortfolio.h>
 using namespace std;
 
 bool processStoAct(vector<stock>& myportfolio, string jsonstr, string delimiter, double& dividendIncome){
@@ -24,6 +25,7 @@ bool processStoAct(vector<stock>& myportfolio, string jsonstr, string delimiter,
         date = date.substr(0,10);
         cout << "On " << date << ", you have:" << endl;
         bool update = updateStoAct(myportfolio, dividend, split, stock, dividendIncome);
+        printPorfolio(myportfolio, dividendIncome);
     }
     return true;
 }

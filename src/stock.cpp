@@ -7,7 +7,7 @@ ostream & operator <<(ostream & output, const stock & stk){
     return output;
 } 
 
-stock :: stock (string ticker, int shares, double price){
+stock::stock (string ticker, int shares, double price){
     this -> ticker = ticker;
     this -> shares = shares;
     this -> price = price;
