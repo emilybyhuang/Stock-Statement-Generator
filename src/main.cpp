@@ -13,6 +13,7 @@
 #include <processStoAct.h>
 #include <processInfo.h>
 
+cout << "hello";
 using namespace std;
 
 //use the argument vectors as input(assume passing in input through command line)
