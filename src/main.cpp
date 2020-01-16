@@ -11,7 +11,7 @@
 #include <transaction.h>
 #include <processAct.h>
 #include <processStoAct.h>
-#include <processInfo.h>
+#include <processinfo.h>
 
 using namespace std;
 

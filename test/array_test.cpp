@@ -1,4 +1,5 @@
-#include<nlohmann/json.hpp>
+/* #include<nlohmann/json.hpp> */
+#include "json.hpp"
 #include<string>
 #include<iostream>
 #include<fstream>
@@ -16,9 +17,34 @@ int main() {
 		cout << l << endl;
 
 		nlohmann::json jobjs = nlohmann::json::parse(l);
-		cout << jobjs << endl ;
-		cout << "jobjs.size(): " <<jobjs.size() << endl;
+		
+//		jobjs.erase(2);
+
+		for(int i=0; i< jobjs.size(); i ++) {
+
+			cout <<  jobjs[i]["date"] << endl;
+		}
 	}
+
+
+
+
+	nlohmann::json buffer=jobjs[0];
+	int bufferIndex=0;
+
+	for(int i=1; i < jobjs.size(); ) {
+		//this element is the same as bufferred
+		if(jobjs[i]["date"] == temp["date"] ){
+			//add jobjs[i] to temp;
+			//jobjs.erace(i);
+			//
+		} else {
+			buffer = jobjs[i];
+			bufferIndex = i;
+			
+			}
+	}
+
 
 	return 0;
 	
