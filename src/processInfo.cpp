@@ -2,9 +2,7 @@
 #include <iomanip>
 #include <stock.h>
 #include <updateAct.h>
-#include <processAct.h>
 #include <updateStoAct.h>
-#include <processStoAct.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
 #include <printPortfolio.h>
@@ -15,7 +13,8 @@ using namespace std;
 
 bool processInfo(vector<stock>& myportfolio, string jsonActStr, string jsonStoStr, 
 string delimiter, double dividendIncome){
-    
+    vector<json::action> actionArray;
+    vector<json::
     string actDate, actAction, actPrice, actTicker, actShares, 
     stoActDate,stoActDividend, stoActSplit, stoActStock;
     bool actReady = true;
