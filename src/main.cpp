@@ -6,8 +6,7 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <boost/algorithm/string.hpp>
-#include <updateact.h>
-#include <updatestoact.h>
+#include <update.h>
 #include <transaction.h>
 #include <processinfo.h>
 
