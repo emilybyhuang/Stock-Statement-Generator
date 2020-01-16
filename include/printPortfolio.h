@@ -1,7 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <stock.h>
-#include <updateStoAct.h>
+#include <updatestoact.h>
+#include <updateact.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
 

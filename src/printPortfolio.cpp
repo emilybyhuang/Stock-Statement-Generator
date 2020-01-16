@@ -4,7 +4,7 @@
 #include <updateStoAct.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
-#include <printPortfolio.h>
+#include <printportfolio.h>
 
 void printPorfolio(vector<stock>& myportfolio, double dividendIncome){
     for(int i = 0; i < myportfolio.size(); i++){

@@ -5,8 +5,7 @@
 #include <updateAct.h>
 #include <iomanip>
 
-
-bool updateStoAct(std::vector<stock>& mystocks, string dividend, string split, string stock, double& dividendIncome){
+void updateStoAct(std::vector<stock>& mystocks, string dividend, string split, string stock, double& dividendIncome){
     if(!split.empty()){
         for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
@@ -24,8 +23,5 @@ bool updateStoAct(std::vector<stock>& mystocks, string dividend, string split, s
             }
         }
     }
-
-
-    return true;
 
 }

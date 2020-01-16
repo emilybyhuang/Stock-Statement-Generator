@@ -5,7 +5,7 @@
 #include <updateAct.h>
 #include <iomanip>
 
-bool updateAct(std::vector<stock>& mystocks, string action, string ticker, string shares, string price){
+void updateAct(std::vector<stock>& mystocks, string action, string ticker, string shares, string price){
     //cout << "update size" << mystocks.size(); 
     if(action == "BUY"){
         bool present = false;
@@ -38,8 +38,8 @@ bool updateAct(std::vector<stock>& mystocks, string action, string ticker, strin
         }
         if(!found) {
             cout << "Error: dont have stocks with this ticker" << endl;
-            return false;
+            return;
         }
     }
-    return true;
+    return;
 }
