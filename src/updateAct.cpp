@@ -16,8 +16,8 @@ void updateAct(std::vector<stock>& mystocks, string action, string ticker, strin
             }
         }
         if(present == false){
-            stock newstock(ticker, stoi(shares),stod(price));
-            mystocks.push_back(newstock);
+            stock *ns = new stock(ticker, stoi(shares),stod(price));
+            mystocks.push_back(*ns);
         }
         cout <<'\t' << "- You bought " << stoi(shares) << " of " << ticker << " at a price of $" << 
         fixed << setprecision(2) << stod(price) << " per share" << endl;
