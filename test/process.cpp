@@ -29,12 +29,12 @@ int main() {
 
 
 
-	nlohmann::json buffer=jobjs[0];
-	int bufferIndex=0;
+	int bufferIndex=0;  // buffer index
 
 	for(int i=1; i < jobjs.size(); ) {
 		//this element is the same as bufferred
-		if(jobjs[i]["date"] == buffer["date"] ){
+		if(jobjs[i]["date"] == jobjs[bufferIndex]["date"] ){
+
 
 			//merfe jobjs[i] to jobjs[bufferIndex];
 			//
