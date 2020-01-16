@@ -1,7 +1,6 @@
 #include <iostream>
 #include <iomanip>
 #include <stock.h>
-#include <updateStoAct.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
 #include <printportfolio.h>

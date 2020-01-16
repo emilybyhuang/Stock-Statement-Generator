@@ -2,7 +2,7 @@
 #include <stock.h>
 #include <boost/algorithm/string.hpp>
 #include <typeinfo>
-#include <updateAct.h>
+#include <updatestoact.h>
 #include <iomanip>
 
 void updateStoAct(std::vector<stock>& mystocks, string dividend, string split, string stock, double& dividendIncome){

@@ -1,11 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include <stock.h>
-#include <updateAct.h>
-#include <updateStoAct.h>
+#include <updateact.h>
+#include <updatestoact.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
-#include <printPortfolio.h>
+#include <printportfolio.h>
 #include <string.h>
 #include <cstring>
 

@@ -9,7 +9,7 @@
 #include <updateact.h>
 #include <updatestoact.h>
 #include <transaction.h>
-#include <processInfo.h>
+#include <processinfo.h>
 
 using namespace std;
 
