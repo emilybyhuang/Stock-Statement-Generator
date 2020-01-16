@@ -8,6 +8,7 @@
 #include <printportfolio.h>
 #include <string.h>
 #include <cstring>
+#include <debug.h>
 
 using namespace std;
 
@@ -70,7 +71,7 @@ void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json 
         // cout << jsonAct[i] << endl;
         // cout << jsonStoAct[j] << endl;
         if(j > jsonStoAct.size() || strcmp(actDate.c_str(), stoActDate.c_str()) < 0){
-            cout << "1" << endl;
+            cout << DBG << "1" << endl; 
             updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
             if(i!=0 && (actDate != jsonAct[i-1]["date"])){
                 actDate = actDate.substr(0,10);
