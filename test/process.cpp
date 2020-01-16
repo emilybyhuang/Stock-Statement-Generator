@@ -34,15 +34,18 @@ int main() {
 
 	for(int i=1; i < jobjs.size(); ) {
 		//this element is the same as bufferred
-		if(jobjs[i]["date"] == temp["date"] ){
-			//add jobjs[i] to temp;
-			//jobjs.erace(i);
+		if(jobjs[i]["date"] == buffer["date"] ){
+
+			//merfe jobjs[i] to jobjs[bufferIndex];
 			//
+			//jobjs.erace(i);
+
 		} else {
+
 			buffer = jobjs[i];
 			bufferIndex = i;
 			
-			}
+		}
 	}
 
 
