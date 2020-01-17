@@ -35,13 +35,11 @@ nlohmann::json convertToJson(string str){
 void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json jsonStoAct, double dividendIncome){
     string actDate, actAction, actPrice, actTicker, actShares;
     string stoActDate,stoActDividend, stoActSplit, stoActStock;
-    //int count = jsonAct.size()+ jsonStoAct.size();
-    
+    bool wait = false;
     int i = 0, j = 0;
-    
-    string date0{ "0000-00-00" };
-
+    string date0 = "0000-00-00";
     while(i < jsonAct.size() || j < jsonStoAct.size()){
+        //cout << "wait: " << wait << endl;
         if( i < jsonAct.size()) {
             actDate = jsonAct[i]["date"];
             actAction = jsonAct[i]["action"];
@@ -57,42 +55,58 @@ void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json 
             stoActStock = jsonStoAct[j]["stock"];
         }
 
+        //cout << "current date0: " << date0 << endl;
         //stock_action but no action
         if((i > jsonAct.size()) && ( j< jsonStoAct.size())) {
             stoActDate = stoActDate.substr(0,10);
             boost::replace_all(stoActDate, "/", "-");
-        if( stoActDate != date0 && haveThisStock(myportfolio, stoActStock) ) {
-            cout << "On " << stoActDate << ", you have:" << endl;
+            if( stoActDate != date0 && haveThisStock(myportfolio, stoActStock) ) {
+                cout << "unique date" << endl;
+                cout << "On " << stoActDate << ", you have:" << endl; 
+            }else if(stoActDate == date0){
+                wait = true;
+            }
             date0 = stoActDate;
-        }
-            updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
+            updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome, wait);
             j++;
             continue;
         }
 
-        // no stock_action but action
+        // action but no stock_action
         if((j>jsonStoAct.size()) && ( i < jsonAct.size()) ) {
             actDate = actDate.substr(0,10);
             boost::replace_all(actDate, "/", "-");
-        if( date0 != actDate ) {
-            cout << "On " << actDate << ", you have:" << endl;
+            //cout << "comparing: " << stoActDate.compare(date0) << endl;
+            //cout << "\"" << actDate << "\"" << " " << "\"" << date0 << "\"" << endl;
+            if( date0 != actDate ) {
+                //cout << "unique date" << endl;
+                cout << "On " << actDate << ", you have:" << endl;
+            }else if(actDate == date0){
+                //
+                wait = true;
+            }
+            //cout << "old date0: " << date0 << endl;
             date0 = actDate;
-        }
-            updateAct(myportfolio,actAction, actTicker, actShares, actPrice, dividendIncome);
+            //cout << "new date0: " << date0 << endl;
+            
+             updateAct(myportfolio,actAction, actTicker, actShares, actPrice, dividendIncome, wait);
             i++;
             continue;
         }
 
-        // else both: 
+        // else has action and stock action strings: 
         // action has earlier date
         if( strcmp(actDate.c_str(), stoActDate.c_str()) < 0){
             actDate = actDate.substr(0,10);
             boost::replace_all(actDate, "/", "-");
             if( date0 != actDate ) {
-            cout << "On " << actDate << ", you have:" << endl;
+            cout << "unique date" << endl;
+            cout << "On " << actDate << ", you have:" << endl;   
+            }else if(stoActDate == date0){
+                wait = true;
+            }
             date0 = actDate;
-        }
-            updateAct(myportfolio,actAction, actTicker, actShares, actPrice, dividendIncome);
+            updateAct(myportfolio,actAction, actTicker, actShares, actPrice, dividendIncome, wait);
             i++;
             continue;
         }
@@ -100,11 +114,13 @@ void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json 
         //stock action has earlier date
         if( strcmp(actDate.c_str(), stoActDate.c_str()) > 0){
             stoActDate = stoActDate.substr(0,10);
-        if(stoActDate != date0 && haveThisStock(myportfolio, stoActStock)) {
-            cout << "On " << stoActDate << ", you have:" << endl;
-            date0 = stoActDate;
-        }
-            updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome);
+            if(stoActDate != date0 && haveThisStock(myportfolio, stoActStock)) {
+                cout << "unique date" << endl;
+                cout << "On " << stoActDate << ", you have:" << endl;
+            }else if(stoActDate == date0){
+                wait = true;
+            }
+            updateStoAct(myportfolio, stoActDividend, stoActSplit, stoActStock, dividendIncome, wait);
             j++;
             continue;
         }
@@ -115,22 +131,22 @@ void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json 
             boost::replace_all(actDate, "/", "-");
             if( date0 != actDate ) {
                 cout << "On " << actDate << ", you have:" << endl;
-                date0 = actDate;
+            }else if(stoActDate == date0){
+                wait = true;
             }
-            updateAct(myportfolio,actAction, actTicker, actShares, actPrice, dividendIncome);
-            updateStoAct(myportfolio,stoActDividend, stoActSplit, stoActStock, dividendIncome);
+            date0 = actDate;
+            updateAct(myportfolio,actAction, actTicker, actShares, actPrice, dividendIncome, wait);
+            updateStoAct(myportfolio,stoActDividend, stoActSplit, stoActStock, dividendIncome, wait);
             i++;
             j++;
         }
+        //wait = false;
     }
 }
 
 bool haveThisStock(vector<stock>& myportfolio, string ticker){
     for(int i = 0; i < myportfolio.size(); i++){
-        if(myportfolio[i].ticker == ticker){
-            return true;
-        }
+        if(myportfolio[i].ticker == ticker) return true;
     }
     return false;
 }
-
