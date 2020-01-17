@@ -13,7 +13,11 @@ void updateAct(std::vector<stock>& mystocks, string action, string ticker, strin
         for (int i = 0; i < mystocks.size(); i++){
             if(ticker == mystocks[i].ticker){
                 present = true;
+                mystocks[i].price = ((mystocks[i].price * mystocks[i].shares) + (stod(price) * stoi(shares)))
+                / (mystocks[i].shares + stod(shares));
                 mystocks[i].shares += stoi(shares);
+                //cout << "current price/stock: " << mystocks[i].price <<endl;
+                //cout << "current shares: " << mystocks[i].shares << endl;
             }
         }
         if(present == false){
@@ -26,23 +30,6 @@ void updateAct(std::vector<stock>& mystocks, string action, string ticker, strin
         fixed << setprecision(2) << stod(price) << " per share" << endl;
     }else if (action == "SELL"){
         bool found = false;
-        // for (int i = 0; i < mystocks.size(); i++){
-        //     if(ticker == mystocks[i].ticker){
-        //         found = true;
-        //         double worth = stoi(shares) * stod(price);
-        //         string word;
-        //         if(worth > (stoi(shares) * (mystocks[i].price))) word = "profit";
-        //         else word = "loss";
-        //         mystocks[i].shares = mystocks[i].shares - stoi(shares);
-        //        // if(mystocks[i].shares == 0) mystocks.erase(i);
-
-        //         printPorfolio(mystocks, dividendIncome);
-        //         cout << "  Transactions:" << endl;
-        //         cout <<'\t' << "- You sold " << stoi(shares) << " of " << ticker << " at a price of $" << 
-        //         fixed << setprecision(2) << stod(price) << " per share for a " << word << " of $" << 
-        //         worth - (stoi(shares) * (mystocks[i].price)) << endl;
-        //     }
-        // }
         int original = 0;
         bool increment = true;
         for (auto it = mystocks.begin(); it != mystocks.end();){

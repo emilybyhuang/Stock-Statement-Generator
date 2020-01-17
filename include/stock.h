@@ -8,6 +8,7 @@ class stock{
     string ticker;
     int shares;
     double price;
+    // double value;
     stock (string ticker, int shares, double price);
     friend ostream &operator <<(ostream & output, const stock & stk);
 };

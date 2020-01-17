@@ -11,4 +11,5 @@ stock::stock (string ticker, int shares, double price){
     this -> ticker = ticker;
     this -> shares = shares;
     this -> price = price;
+    //this -> value = this -> value + (shares*price);
 }
