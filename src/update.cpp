@@ -54,7 +54,6 @@ void updateAct(std::vector<stock>& mystocks, string action, string ticker, strin
             }
             if(increment) it++;
         }
-
         if(!found) {
             cout << "Error: dont have stocks with this ticker" << endl;
             return;
@@ -72,11 +71,10 @@ void updateStoAct(std::vector<stock>& mystocks, string dividend, string split, s
                 printPorfolio(mystocks, dividendIncome);
                 cout << "  Transactions:" << endl;
                 cout <<'\t' << "- " << stock << " split " << split << " to 1, and you have " << mystocks[i].shares  << " shares" << endl;
-		break;
+		        break;
             }
         }   
     }
-
     if(!dividend.empty()){
         for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
@@ -85,7 +83,7 @@ void updateStoAct(std::vector<stock>& mystocks, string dividend, string split, s
                 cout << "  Transactions:" << endl;
                 cout <<'\t' << "- " << stock << " paid out $" << fixed << setprecision(2) << stod(dividend) << 
                 " per share, and you have " << mystocks[i].shares << " shares" << endl;
-		break;
+		        break;
             }
         }
     }
