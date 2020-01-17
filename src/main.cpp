@@ -14,7 +14,7 @@ using namespace std;
 
 //use the argument vectors as input(assume passing in input through command line)
 int main(int argc, char *argv[]) {
-	vector<nlohmann::json> profilevector;
+	cout << "\"\"\"" << endl;
 	vector<stock> mystocks;
 	string actionstring, stockstring;
 
@@ -27,18 +27,21 @@ int main(int argc, char *argv[]) {
 	getline(file, actionstring);
 	getline(file, stockstring);
 	
+	//get the action and stockaction string in a pseudo json form
 	size_t foundLeft1 = actionstring.find('[');
 	size_t foundRight1 = actionstring.find(']');
 	size_t foundLeft2 = stockstring.find('[');
 	size_t foundRight2 = stockstring.find(']');
-	//get the action and stockaction string in a pseudo json form
 	string jsonactstr = actionstring.substr(foundLeft1, foundRight1);
 	string jsonstostr = stockstring.substr(foundLeft2, foundRight2);
-	
-	//bool a_process = processAct(mystocks, jsonactstr, delimiter, dividendIncome);
-	//bool s_process = processStoAct(mystocks, jsonstostr, delimiter, dividendIncome);
+
+	//update the user's stock porfolio, print stock statement
 	mainControl(mystocks,jsonactstr,jsonstostr);
-	// int a;
-	// cin >> a;
+
+	//free dynamically allocated memory
+	for(auto it = mystocks.begin(); it!= mystocks.end();){
+		it = mystocks.erase(it);
+	}
+	cout << "\"\"\"" << endl;
 	return 0;				
 }

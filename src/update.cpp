@@ -3,7 +3,6 @@
 #include <boost/algorithm/string.hpp>
 #include <typeinfo>
 #include <update.h>
-#include <printportfolio.h>
 #include <iomanip>
 
 void updateAct(std::vector<stock>& mystocks, string action, string ticker, string shares, string price, double dividendIncome){

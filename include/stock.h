@@ -12,5 +12,5 @@ class stock{
     stock (string ticker, int shares, double price);
     friend ostream &operator <<(ostream & output, const stock & stk);
 };
-
+void printPorfolio(vector<stock>& myportfolio, double dividendIncome);
 #endif
