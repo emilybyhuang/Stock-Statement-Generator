@@ -1,8 +1,8 @@
+#ifndef STOCK_H
+#define STOCK_H
 #include <iostream>
 
 using namespace std;
-#ifndef SHARE
-#define SHARE
 class stock{
     public:
     string ticker;
