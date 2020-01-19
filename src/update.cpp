@@ -30,7 +30,7 @@ double updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& d
             stock *ns = new stock(ticker, stoi(shares),stod(price));
             mystocks.push_back(*ns);
         }else if(action == "SELL"){
-            cout << "Error: stock with ticker " << ticker << " was no found." << endl;
+            cout << "Error: stock with ticker " << ticker << " was not found." << endl;
         }else{  
             cout << "Error: the action " << action << " does not exist." << endl;
         }
