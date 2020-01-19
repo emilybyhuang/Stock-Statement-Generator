@@ -7,7 +7,6 @@
 #include <nlohmann/json.hpp>
 #include <boost/algorithm/string.hpp>
 #include <update.h>
-#include <transaction.h>
 #include <processinfo.h>
 
 using namespace std;

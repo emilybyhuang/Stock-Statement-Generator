@@ -17,48 +17,39 @@ double updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& d
     string price = jsonAct["price"];
     string shares = jsonAct["shares"];
     double profit;
-    if(action == "BUY"){
-        bool present = false;
-        for (int i = 0; i < mystocks.size(); i++){
-            if(ticker == mystocks[i].ticker){
-                present = true;
-                mystocks[i].price = ((mystocks[i].price * mystocks[i].shares) + (stod(price) * stoi(shares)))
-                / (mystocks[i].shares + stod(shares));
-                mystocks[i].shares += stoi(shares);
-                double worth = mystocks[i].shares * mystocks[i].price;
-            }
+    vector<stock>::iterator it = mystocks.begin();
+    bool found = false;
+    for (it = mystocks.begin(); it != mystocks.end();it++){
+        if(ticker == it -> ticker){
+            found = true;
+            break;
         }
-        if(present == false){
+    }
+    if(!found){
+        if(action == "BUY"){
             stock *ns = new stock(ticker, stoi(shares),stod(price));
             mystocks.push_back(*ns);
+        }else if(action == "SELL"){
+            cout << "Error: stock with ticker " << ticker << " was no found." << endl;
+        }else{  
+            cout << "Error: the action " << action << " does not exist." << endl;
         }
         return 0;
-    }else if (action == "SELL"){
-        bool found = false;
-        int original = 0;
-        bool increment = true;
-        for (auto it = mystocks.begin(); it != mystocks.end();){
-            increment = true;
-            if(ticker == it -> ticker){
-                found = true;
-                profit = stoi(shares) * stod(price);
-                string word;
-                if(profit > (stoi(shares) * (it->price))) word = "profit";
-                else word = "loss";
-                profit = (stoi(shares) * stod(price)) - (stoi(shares) * it -> price);
-                
-                original = it -> shares;
-                it->shares = it->shares - stoi(shares);
-                if(original != 0 && it->shares == 0){
-                    increment = false;
-                    it = mystocks.erase(it);
-                }
-            }
-            if(increment) it++;
-        }
-        if(!found) {
-            cout << "Error: dont have stocks with this ticker" << endl;
-            return 0;
+    }
+    if(action == "BUY"){
+        it -> price = ((it->price * it->shares) + (stod(price) * stoi(shares)))/(it->shares + stod(shares));
+        it->shares += stoi(shares);
+        return 0;
+    }else if(action == "SELL"){
+        string word;
+        int originalShares = 0;
+        profit = stoi(shares) * stod(price) - (stoi(shares) * (it->price));
+        if(profit > 0) word = "profit";
+        else word = "loss";
+        originalShares = it->shares;
+        it->shares = it->shares - stoi(shares);
+        if(originalShares != 0 && it->shares == 0){
+            it=mystocks.erase(it);
         }
         return profit;
     }
@@ -118,4 +109,5 @@ string & bufferDate){
     actBuffer.clear();
     stoActBuffer.clear();
     bufferDate.clear();
+    profit.clear();
 }
