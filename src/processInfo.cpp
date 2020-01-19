@@ -15,6 +15,7 @@ nlohmann::json mergeTrans(nlohmann::json &);
 void process(vector<stock>&, nlohmann::json&, nlohmann::json&, double);
 void processStoAct(vector<stock>&, nlohmann::json);
 
+//main control functio for processing the action and stock action strings
 bool mainControl(vector<stock>& myportfolio, string jsonActStr, string jsonStoStr){
     double dividendIncome = 0.0;
     nlohmann::json jsonAct = convertToJson(jsonActStr);
@@ -23,11 +24,24 @@ bool mainControl(vector<stock>& myportfolio, string jsonActStr, string jsonStoSt
     return true;
 }
 
-
+//convert into json file format and parse into json arrays
 nlohmann::json convertToJson(string str){
     replace(str.begin(), str.end(), '\'', '\"');
 	nlohmann::json jsonarr = nlohmann::json::parse(str);
 	return jsonarr;
+}
+
+//check for the validity of the date
+bool checkValidDate(string date){
+    string year = date.substr(0,4);
+    string month = date.substr(5,2);
+    string day = date.substr(8,2);
+    if(stoi(year) < 0001 || stoi(month) < 01 || stoi(month) > 12 || stoi(day) < 01 || stoi(day) > 31){
+        cout << "Invalid date" << endl;
+        return false;
+    }else{
+        return true;
+    }
 }
 
 void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json& jsonStoAct, double dividendIncome){
@@ -43,6 +57,8 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
     do{
         oldI = i;
         oldJ = j;
+
+        //get the current date
         if(i < jsonAct.size()){
             actDate = jsonAct[i]["date"];
             actDate = actDate.substr(0,10);
@@ -53,32 +69,36 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
             stoActDate = stoActDate.substr(0,10);
         }
 
-        // else has action and stock action strings: 
-        // action has earlier date
+        //if action has earlier date
         if(strcmp(actDate.c_str(), stoActDate.c_str()) < 0){
-            currentDate = actDate;
+            if(checkValidDate(actDate))currentDate = actDate;
+            else continue;
             bufferType = 1;
             i++;
         }
         
-        //stock action has earlier date
+        //if stock action has earlier date
         if( strcmp(actDate.c_str(), stoActDate.c_str()) > 0){
-            currentDate = stoActDate;
+            if(checkValidDate(stoActDate))currentDate = stoActDate;
+            else continue;
             bufferType = 2;
             j++;
         }
 
         // both have the same date
         if(strcmp(actDate.c_str(), stoActDate.c_str()) == 0){
-            currentDate = actDate;
+            if(checkValidDate(actDate))currentDate = actDate;
+            else continue;
             bufferType = 3;
             i++;
             j++;
         }
 
+        //if finished processing the string
         if(i >= jsonAct.size())actDate = "9999/12/31";
         if(j >= jsonStoAct.size())stoActDate = "9999/12/31";
 
+        //update the buffer
         if((currentDate != bufferDate) || ((oldI == jsonAct.size()) && (oldJ == jsonStoAct.size()))){ 
             updateAll(myportfolio, actBuffer,stoActBuffer,jsonAct,jsonStoAct, dividendIncome, bufferDate);
         }
@@ -89,7 +109,7 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
             actBuffer.push_back(i-1);
             stoActBuffer.push_back(j-1);
         }
-        //cout << "\n\n*******" << endl << endl;
     }while(i <= jsonAct.size() || j <= jsonStoAct.size());
+    actBuffer.clear();
+    stoActBuffer.clear();
 }
-

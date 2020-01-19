@@ -15,7 +15,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
 	cout << "\"\"\"" << endl;
 	vector<stock> mystocks;
-	string actionstring, stockstring;
+	string actionstring, stockstring, actions, stockActions;
 
 	//read from the input file
 	fstream file(argv[1]);
@@ -25,7 +25,14 @@ int main(int argc, char *argv[]) {
 	//store the inputs as strings
 	getline(file, actionstring);
 	getline(file, stockstring);
-	
+	stringstream actStream(actionstring);
+	stringstream stoActStream(stockstring);
+	actStream >> actions;
+	stoActStream >> stockActions;
+	if(actions != "actions") cout << "Error: expecting actions" << endl;
+	if(stockActions != "stock_actions") cout << "Error: expecting stock_actions" << endl;
+
+
 	//get the action and stockaction string in a pseudo json form
 	size_t foundLeft1 = actionstring.find('[');
 	size_t foundRight1 = actionstring.find(']');
