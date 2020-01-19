@@ -8,8 +8,7 @@
 using namespace std;
 
 void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& dividendIncome){
-            cout << "&&&&&updating ok" << endl;
-
+    cout << "&&&&&updating ok" << endl;
     string date = jsonAct["date"];
     //to do: check validity of date
     string action = jsonAct["action"];
@@ -29,11 +28,6 @@ void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& div
         if(present == false){
             stock *ns = new stock(ticker, stoi(shares),stod(price));
             mystocks.push_back(*ns);
-        }
-        if(!wait){
-            cout << "updateAct Buy" << endl;
-            printPorfolio(mystocks, dividendIncome);
-            cout << "  Transactions:" << endl;
         }
         //cout <<'\t' << "- You bought " << stoi(shares) << " of " << ticker << " at a price of $" << 
             //fixed << setprecision(2) << stod(price) << " per share" << endl;
@@ -55,11 +49,6 @@ void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& div
                     increment = false;
                     it = mystocks.erase(it);
                 }
-                if(!wait){
-                    cout << "updateAct sell " << endl;
-                    printPorfolio(mystocks, dividendIncome);
-                    cout << "  Transactions:" << endl;
-                }
                 //cout <<'\t' << "- You sold " << stoi(shares) << " of " << ticker << " at a price of $" << 
                 //fixed << setprecision(2) << stod(price) << " per share for a " << word << " of $" << 
                 //worth - (stoi(shares) * (it->price)) << endl;
@@ -75,8 +64,7 @@ void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& div
 }
 
 void updateStoAct(std::vector<stock>& mystocks, nlohmann::json jsonStoAct, double& dividendIncome){
-            cout << "&&&&&updating ok" << endl;
-
+    cout << "&&&&&updating ok" << endl;
     //cout << "stock, wait: " << stock << wait << endl;
     string stock = jsonStoAct["stock"];
     string split = jsonStoAct["split"];
@@ -122,9 +110,11 @@ string & bufferDate){
     cout << actBuffer.size() << endl;
     cout << stoActBuffer.size() << endl;
     for(size_t i = 0; i < actBuffer.size(); i++){
+        cout << "jsonAct[actBuffer[i]] " << jsonAct[actBuffer[i]] << endl;
         updateAct(mystocks, jsonAct[actBuffer[i]], dividendIncome);
     }
     for(size_t j = 0; j < stoActBuffer.size(); j++){
+        cout << "jsonStoAct[stoActBuffer[j]] " << jsonStoAct[stoActBuffer[j]] << endl;
         updateStoAct(mystocks, jsonStoAct[stoActBuffer[j]], dividendIncome);
     }
     printPorfolio(mystocks,dividendIncome);
