@@ -71,27 +71,32 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
 
         //if action has earlier date
         if(strcmp(actDate.c_str(), stoActDate.c_str()) < 0){
-            if(checkValidDate(actDate))currentDate = actDate;
-            else validDate = false;
-            bufferType = 1;
             i++;
+            if(checkValidDate(actDate))currentDate = actDate;
+            else continue;
+            //else validDate = false;
+            bufferType = 1;
+            
         }
         
         //if stock action has earlier date
         if( strcmp(actDate.c_str(), stoActDate.c_str()) > 0){
-            if(checkValidDate(stoActDate))currentDate = stoActDate;
-            else validDate = false;
-            bufferType = 2;
             j++;
+            if(checkValidDate(stoActDate))currentDate = stoActDate;
+            else continue;
+            //else validDate = false;
+            bufferType = 2;
+            
         }
 
         // both have the same date
         if(strcmp(actDate.c_str(), stoActDate.c_str()) == 0){
-            if(checkValidDate(actDate))currentDate = actDate;
-            else validDate = false;
-            bufferType = 3;
             i++;
             j++;
+            if(checkValidDate(actDate))currentDate = actDate;
+            else continue;
+            //else validDate = false;
+            bufferType = 3;
         }
 
         //if finished processing the string
@@ -99,7 +104,7 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
         if(j >= jsonStoAct.size())stoActDate = "9999/12/31";
 
         //update the buffer
-        if(validDate){
+        //if(validDate){
             if((currentDate != bufferDate) || ((oldI == jsonAct.size()) && (oldJ == jsonStoAct.size()))){ 
                 updateAll(myportfolio, actBuffer,stoActBuffer,jsonAct,jsonStoAct, dividendIncome, bufferDate);
             }
@@ -110,8 +115,8 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
                 actBuffer.push_back(i-1);
                 stoActBuffer.push_back(j-1);
             }
-        }
-        validDate = true;
+        //}
+        //validDate = true;
     }while(i <= jsonAct.size() || j <= jsonStoAct.size());
     actBuffer.clear();
     stoActBuffer.clear();
