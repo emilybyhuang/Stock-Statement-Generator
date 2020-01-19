@@ -76,4 +76,11 @@ void printStoAct(vector<stock>& mystocks, nlohmann::json jsonStoAct){
         }
     }
 }
+
+bool haveThisStock(vector<stock>& myportfolio, string ticker){
+    for(int i = 0; i < myportfolio.size(); i++){
+        if(myportfolio[i].ticker == ticker) return true;
+    }
+    return false;
+}
 #endif

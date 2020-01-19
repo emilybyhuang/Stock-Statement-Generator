@@ -16,5 +16,6 @@ class stock{
 void printPorfolio(vector<stock>& myportfolio, double dividendIncome);
 void printAct(vector<stock>& mystocks, nlohmann::json jsonAct);
 void printStoAct(vector<stock>& mystocks, nlohmann::json jsonStoAct);
+bool haveThisStock(vector<stock>& myportfolio, string ticker);
 #endif
 
