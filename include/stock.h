@@ -14,8 +14,8 @@ class stock{
     friend ostream &operator <<(ostream & output, const stock & stk);
 };
 void printPorfolio(vector<stock>& myportfolio, double dividendIncome);
-void printAct(vector<stock>& mystocks, nlohmann::json jsonAct);
-void printStoAct(vector<stock>& mystocks, nlohmann::json jsonStoAct);
+void printAct(vector<stock>& mystocks, nlohmann::json jsonAct, double);
+void printStoAct(vector<stock>& mystocks, nlohmann::json jsonStoAct, double);
 bool haveThisStock(vector<stock>& myportfolio, string ticker);
 #endif
 

@@ -12,7 +12,7 @@ using namespace std;
 
 nlohmann::json convertToJson(string);
 nlohmann::json mergeTrans(nlohmann::json &);
-void process(vector<stock>&, nlohmann::json, nlohmann::json, double);
+void process(vector<stock>&, nlohmann::json&, nlohmann::json&, double);
 void processStoAct(vector<stock>&, nlohmann::json);
 
 bool mainControl(vector<stock>& myportfolio, string jsonActStr, string jsonStoStr){
@@ -31,10 +31,11 @@ nlohmann::json convertToJson(string str){
 	return jsonarr;
 }
 
-void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json jsonStoAct, double dividendIncome){
+void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json& jsonStoAct, double dividendIncome){
     string actDate, stoActDate, currentStock;
     bool wait = false;
     int i = 0, j = 0;
+    int oldI = i, oldJ = j;
     int bufferType;
     //string date0 = "0000/00-00";
     string bufferDate = "0000/00/00";
@@ -42,36 +43,24 @@ void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json 
     vector<int> actBuffer;
     vector<int> stoActBuffer;
     do{
+        oldI = i;
+        oldJ = j;
         cout << "i: " << i << " j: " << j << endl;
         //cout << "\n\n*******" << endl << endl;
         if(i < jsonAct.size()){
             actDate = jsonAct[i]["date"];
-            cout << "ok1" << endl;
+            //cout << "ok1" << endl;
             actDate = actDate.substr(0,10);
         }
         
         if(j < jsonStoAct.size()){
             stoActDate = jsonStoAct[j]["date"];
-            cout << "ok2" << endl;
+            //cout << "ok2" << endl;
             stoActDate = stoActDate.substr(0,10);
         }
 
         cout << "actDate: " <<  actDate << endl;
         cout << "stoActDate: " << stoActDate << endl;
-
-        // action but no stock_action
-        // if((j >= jsonStoAct.size()) && ( i < jsonAct.size()) ) {
-        //     currentDate = actDate;
-        //     bufferType = 1;
-        //     i++;
-        // }
-
-        // //stock_action but no action
-        // if((i >= jsonAct.size()) && ( j < jsonStoAct.size())) {
-        //     currentDate = stoActDate;
-        //     bufferType = 2;
-        //     j++;
-        // }
 
         // else has action and stock action strings: 
         // action has earlier date
@@ -102,13 +91,18 @@ void process(vector<stock>& myportfolio, nlohmann::json jsonAct, nlohmann::json 
             j++;
         }
 
-        if(i >= jsonAct.size())actDate = "9999-12-31";
-        if(j >= jsonStoAct.size())stoActDate = "9999-12-31";
+        if(i >= jsonAct.size())actDate = "9999/12/31";
+        if(j >= jsonStoAct.size())stoActDate = "9999/12/31";
 
         cout << "\ncurrent date: " << currentDate << endl;
         cout << "bufferType" << bufferType << endl;
         cout << "bufferdate: " << bufferDate << endl << endl; 
-        if((currentDate != bufferDate) ||((i == jsonAct.size()) &&( j == jsonStoAct.size()))){ 
+        cout << "jsonAct.size()" << jsonAct.size() << endl;
+        cout << "jsonStoAct.size()" << jsonStoAct.size() << endl;
+        // cout << "now i:" << i << "now j:" << j << endl;
+        // cout << "oldI: " << oldI << "oldJ: " << oldJ << endl;
+        if((currentDate != bufferDate) || ((oldI == jsonAct.size()) && (oldJ == jsonStoAct.size()))){ 
+            cout << "going to update" << endl;
             updateAll(myportfolio, actBuffer,stoActBuffer,jsonAct,jsonStoAct, dividendIncome, bufferDate);
         }
         bufferDate = currentDate;

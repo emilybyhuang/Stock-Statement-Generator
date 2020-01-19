@@ -9,15 +9,14 @@ using namespace std;
 
 
 
-void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& dividendIncome){
-    cout << "&&&&&updating ok" << endl;
+double updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& dividendIncome){
     string date = jsonAct["date"];
     //to do: check validity of date
-
     string action = jsonAct["action"];
     string ticker = jsonAct["ticker"];
     string price = jsonAct["price"];
     string shares = jsonAct["shares"];
+    double profit;
     if(action == "BUY"){
         bool present = false;
         for (int i = 0; i < mystocks.size(); i++){
@@ -26,12 +25,14 @@ void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& div
                 mystocks[i].price = ((mystocks[i].price * mystocks[i].shares) + (stod(price) * stoi(shares)))
                 / (mystocks[i].shares + stod(shares));
                 mystocks[i].shares += stoi(shares);
+                double worth = mystocks[i].shares * mystocks[i].price;
             }
         }
         if(present == false){
             stock *ns = new stock(ticker, stoi(shares),stod(price));
             mystocks.push_back(*ns);
         }
+        return 0;
         //cout <<'\t' << "- You bought " << stoi(shares) << " of " << ticker << " at a price of $" << 
             //fixed << setprecision(2) << stod(price) << " per share" << endl;
     }else if (action == "SELL"){
@@ -42,10 +43,12 @@ void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& div
             increment = true;
             if(ticker == it -> ticker){
                 found = true;
-                double worth = stoi(shares) * stod(price);
+                profit = stoi(shares) * stod(price);
                 string word;
-                if(worth > (stoi(shares) * (it->price))) word = "profit";
+                if(profit > (stoi(shares) * (it->price))) word = "profit";
                 else word = "loss";
+                profit = (stoi(shares) * stod(price)) - (stoi(shares) * it -> price);
+                
                 original = it -> shares;
                 it->shares = it->shares - stoi(shares);
                 if(original != 0 && it->shares == 0){
@@ -60,19 +63,19 @@ void updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& div
         }
         if(!found) {
             cout << "Error: dont have stocks with this ticker" << endl;
-            return;
+            return 0;
         }
+        return profit;
     }
-    return;
 }
 
-void updateStoAct(std::vector<stock>& mystocks, nlohmann::json jsonStoAct, double& dividendIncome){
+double updateStoAct(std::vector<stock>& mystocks, nlohmann::json jsonStoAct, double& dividendIncome){
     cout << "&&&&&updating ok" << endl;
     //cout << "stock, wait: " << stock << wait << endl;
     string ticker = jsonStoAct["stock"];
     string split = jsonStoAct["split"];
     string dividend = jsonStoAct["dividend"];
-    if(!haveThisStock(mystocks,ticker)) return;
+    if(!haveThisStock(mystocks,ticker)) return 0;
     if(!split.empty()){
         for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == ticker){
@@ -103,13 +106,14 @@ void updateStoAct(std::vector<stock>& mystocks, nlohmann::json jsonStoAct, doubl
 void updateAll(std::vector<stock>& mystocks, vector<int>& actBuffer,vector<int>& stoActBuffer,
 const nlohmann::json & jsonAct, const nlohmann::json & jsonStoAct, double & dividendIncome, 
 string & bufferDate){
+    vector<double>profit;
     if(bufferDate == "0000/00/00") return;
     cout << DBG << endl;
     cout << actBuffer.size() << endl;
     cout << stoActBuffer.size() << endl;
     for(size_t i = 0; i < actBuffer.size(); i++){
         cout << "jsonAct[actBuffer[i]] " << jsonAct[actBuffer[i]] << endl;
-        updateAct(mystocks, jsonAct[actBuffer[i]], dividendIncome);
+        profit.push_back(updateAct(mystocks, jsonAct[actBuffer[i]], dividendIncome));
     }
     for(size_t j = 0; j < stoActBuffer.size(); j++){
         //if(!haveThisStock(mystocks, jsonStoAct[j]["ticker"])) break; 
@@ -118,11 +122,13 @@ string & bufferDate){
     }
     printPorfolio(mystocks,dividendIncome);
     for(size_t i = 0; i < actBuffer.size(); i++){
-        printAct(mystocks, jsonAct[actBuffer[i]]);
+        //cout << "print act trans" <<endl;
+        printAct(mystocks, jsonAct[actBuffer[i]], profit[i]);
     }
     for(size_t j = 0; j < stoActBuffer.size(); j++){
         if(haveThisStock(mystocks,jsonStoAct[stoActBuffer[j]]["stock"])){
-            printStoAct(mystocks, jsonStoAct[stoActBuffer[j]]);
+            //cout << "print sto act trans" <<endl;
+            printStoAct(mystocks, jsonStoAct[stoActBuffer[j]], 0.0);
         }
     }
     
