@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-#include <stock.h>
+#include <stockFunctions.h>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <boost/algorithm/string.hpp>

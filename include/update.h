@@ -1,7 +1,7 @@
 #ifndef UPDATE
 #define UPDATE
 #include <nlohmann/json.hpp>
-#include <stock.h>
+#include <stockFunctions.h>
 
 using namespace std;
 double updateAct(std::vector<stock>& mystocks, nlohmann::json jsonAct, double& dividendIncome);

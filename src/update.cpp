@@ -1,5 +1,5 @@
 #include <nlohmann/json.hpp>
-#include <stock.h>
+#include <stockFunctions.h>
 #include <boost/algorithm/string.hpp>
 #include <typeinfo>
 #include <update.h>

@@ -1,5 +1,5 @@
-#ifndef STOCK_H
-#define STOCK_H
+#ifndef STOCKFUNCTIONS_H
+#define STOCKFUNCTIONS_H
 #include <iostream>
 #include <nlohmann/json.hpp>
 

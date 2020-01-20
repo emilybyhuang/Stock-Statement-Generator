@@ -1,15 +1,12 @@
 #include <iostream>
 #include <iomanip>
-#include <stock.h>
+#include <stockFunctions.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
-
 using namespace std;
 
-#ifndef STOCK
-#define STOCK
 ostream & operator <<(ostream & output, const stock & stk){
-    output << '\t' << "- " << stk.shares << " shares of " << stk.ticker << " at $" << fixed << setprecision(2) << stk.price << " per share";
+    output << "    - " << stk.shares << " shares of " << stk.ticker << " at $" << fixed << setprecision(2) << stk.price << " per share";
     return output;
 } 
 
@@ -23,7 +20,8 @@ void printPorfolio(vector<stock>& myportfolio, double dividendIncome){
     for(int i = 0; i < myportfolio.size(); i++){
         cout << myportfolio[i] << endl;
     }
-    cout << '\t' << "- $" << fixed << setprecision(2) << dividendIncome << " of dividend income" << endl;
+    if(dividendIncome == 0.0) cout << "    - $0" << " of dividend income" << endl;
+    else cout << "    - $" << fixed << setprecision(2) << dividendIncome << " of dividend income" << endl;
 }
 
 void printAct(vector<stock>& mystocks, nlohmann::json jsonAct, double profit){
@@ -33,13 +31,13 @@ void printAct(vector<stock>& mystocks, nlohmann::json jsonAct, double profit){
     string ticker = jsonAct["ticker"];
     string price = jsonAct["price"];
     if(action == "BUY"){
-        cout <<'\t' << "- You bought " << stoi(shares) << " shares of " << ticker << " at a price of $" << 
+        cout <<"    - You bought " << stoi(shares) << " shares of " << ticker << " at a price of $" << 
             fixed << setprecision(2) << stod(price) << " per share" << endl;
     }else if(action == "SELL"){
         string word;
         if(profit > 0) word = "profit";
         else word = "loss";
-        cout <<'\t' << "- You sold " << stoi(shares) << " shares of " << ticker << " at a price of $" << 
+        cout << "    - You sold " << stoi(shares) << " shares of " << ticker << " at a price of $" << 
         fixed << setprecision(2) << stod(price) << " per share for a " << word << " of $" << profit << endl;
     }  
 }
@@ -51,14 +49,14 @@ void printStoAct(vector<stock>& mystocks, nlohmann::json jsonStoAct){
     if(!split.empty()){
         for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
-                cout <<'\t' << "- " << stock << " split " << split << " to 1, and you have " << mystocks[i].shares  << " shares" << endl;
+                cout <<"    - " << stock << " split " << split << " to 1, and you have " << mystocks[i].shares  << " shares" << endl;
             }
         }
     }
     if(!dividend.empty()){
         for(int i = 0; i < mystocks.size(); i++){
             if(mystocks[i].ticker == stock){
-                cout <<'\t' << "- " << stock << " paid out $" << fixed << setprecision(2) << stod(dividend) << 
+                cout <<"    - " << stock << " paid out $" << fixed << setprecision(2) << stod(dividend) << 
                 " dividend per share, and you have " << mystocks[i].shares << " shares" << endl;
             }
         }
@@ -71,4 +69,3 @@ bool haveThisStock(vector<stock>& myportfolio, string ticker){
     }
     return false;
 }
-#endif
