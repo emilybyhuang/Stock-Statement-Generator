@@ -63,6 +63,7 @@ void printStoAct(vector<stock>& mystocks, nlohmann::json jsonStoAct){
     }
 }
 
+//To check if a stock of the same ticker as the one passed in is present in the portfolio
 bool haveThisStock(vector<stock>& myportfolio, string ticker){
     for(int i = 0; i < myportfolio.size(); i++){
         if(myportfolio[i].ticker == ticker) return true;

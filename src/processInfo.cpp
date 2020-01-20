@@ -10,10 +10,9 @@
 
 using namespace std;
 
-nlohmann::json convertToJson(string);
-nlohmann::json mergeTrans(nlohmann::json &);
-void process(vector<stock>&, nlohmann::json&, nlohmann::json&, double);
-void processStoAct(vector<stock>&, nlohmann::json);
+void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json& jsonStoAct, double dividendIncome);
+nlohmann::json convertToJson(string str);
+bool checkValidDate(string date);
 
 //main control functio for processing the action and stock action strings
 bool mainControl(vector<stock>& myportfolio, string jsonActStr, string jsonStoStr){
@@ -91,7 +90,6 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
                 j++;
                 currentDate = stoActDate;
                 bufferType = 2;
-                
             }
 
             // both have the same date
@@ -101,11 +99,13 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
                 currentDate = actDate;
                 bufferType = 3;
             }
+
             //update the buffer(update the porfolio and print transactions done within the same day)
             if((currentDate != bufferDate) || ((oldI == jsonAct.size()) && (oldJ == jsonStoAct.size()))){ 
                 updateAll(myportfolio, actBuffer, stoActBuffer,jsonAct,jsonStoAct, dividendIncome, bufferDate);
             }
             bufferDate = currentDate;
+
             //put the index of the action or stock action into their respective buffers(previously determined)
             if(bufferType == 1) actBuffer.push_back(i-1);
             else if(bufferType == 2) stoActBuffer.push_back(j-1);
@@ -113,8 +113,8 @@ void process(vector<stock>& myportfolio, nlohmann::json& jsonAct, nlohmann::json
                 actBuffer.push_back(i-1);
                 stoActBuffer.push_back(j-1);
             }
-            //if finished processing the string, set it to a very large date such that it will not be the next 
-            //action acessed
+
+            //if finished processing the string, set it to a very large date such that it will not be the next action acessed
             if(i >= jsonAct.size())actDate = "9999/12/31";
             if(j >= jsonStoAct.size())stoActDate = "9999/12/31";
         }
